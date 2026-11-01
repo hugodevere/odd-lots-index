@@ -1,4 +1,4 @@
-# Odd Lots index
+# Odd Lots index (Claude and GPT Assisted)
 
 A retrospective study of equity calls in Bloomberg's Odd Lots podcast, January 2023 to October 2026. Three language models extract candidate calls, a judge reviews them, and the code constructs three long-only baskets. This is independent research, with no affiliation with Bloomberg or Odd Lots.
 
