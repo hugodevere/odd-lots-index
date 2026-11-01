@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from release_check import CSV_COLUMNS, PERSONAL_PATH, SECRET, allowed, check, check_csv
+from release_check import ASSET_HASHES, CSV_COLUMNS, PERSONAL_PATH, SECRET, allowed, check, check_csv
 
 
 @pytest.mark.parametrize("prefix", ["/" + "users/", "/" + "HOME/", "c:/" + "uSeRs/", "~" + "/", "/" + "root/"])
@@ -40,6 +40,31 @@ def public_fixture(root):
     for name, fields in CSV_COLUMNS.items():
         with (root / "data" / name).open("w", newline="") as handle:
             csv.writer(handle).writerow(sorted(fields))
+    for relative in ASSET_HASHES:
+        asset = root / relative
+        asset.parent.mkdir(parents=True, exist_ok=True)
+        asset.write_bytes((Path(__file__).resolve().parents[1] / relative).read_bytes())
+
+
+def test_reviewed_chart_is_accepted(tmp_path):
+    public_fixture(tmp_path)
+    files = check(tmp_path)
+    assert tmp_path / "assets/odd-lots-index.png" in files
+
+
+def test_renamed_chart_is_rejected(tmp_path):
+    public_fixture(tmp_path)
+    (tmp_path / "assets/odd-lots-index.png").rename(tmp_path / "assets/another-chart.png")
+    with pytest.raises(ValueError, match="Not on public allowlist"):
+        check(tmp_path)
+
+
+def test_modified_chart_is_rejected(tmp_path):
+    public_fixture(tmp_path)
+    asset = tmp_path / "assets/odd-lots-index.png"
+    asset.write_bytes(asset.read_bytes() + b"changed")
+    with pytest.raises(ValueError, match="Unreviewed chart asset"):
+        check(tmp_path)
 
 
 def test_git_metadata_is_ignored_and_not_packaged(tmp_path):

@@ -22,6 +22,9 @@ SCRIPT_FILES = {
     "apify_transcripts.py", "build_parquet.py", "match_yt.py", "ttml_to_txt.py",
     "extraction_utils.py", "backtest_utils.py", "export_public.py", "release_check.py",
 }
+ASSET_HASHES = {
+    "assets/odd-lots-index.png": "14ae0b159b4692569cdc8b1f2f707c8854bbe2316efff81ef7847afb5b7ca600",
+}
 SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", ".ipynb_checkpoints", ".venv"}
 PERSONAL_PATH = re.compile(
     r"(?:[A-Za-z]:)?[\\/]{1,2}(?:users|home)[\\/]{1,2}[A-Za-z0-9_.-]+"
@@ -85,6 +88,8 @@ def check_csv(text: str, rel: Path) -> list[str]:
 
 
 def allowed(path: Path) -> bool:
+    if path.as_posix() in ASSET_HASHES:
+        return True
     parts = path.parts
     if len(parts) == 1:
         return path.name in ROOT_FILES
@@ -114,6 +119,10 @@ def check(root: Path) -> list[Path]:
             errors.append(f"Not on public allowlist: {rel}")
             continue
         files.append(path)
+        if rel.as_posix() in ASSET_HASHES:
+            if hashlib.sha256(path.read_bytes()).hexdigest() != ASSET_HASHES[rel.as_posix()]:
+                errors.append(f"Unreviewed chart asset: {rel}")
+            continue
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
@@ -139,6 +148,7 @@ def check(root: Path) -> list[Path]:
     required = {"README.md", "LICENSE", "DATA_SOURCES.md", ".env.example", "requirements.txt",
                 "data/trade_recommendations.csv", "data/tbill_3m.csv",
                 "data/odd_lots_youtube_links_2023_2026.csv"}
+    required.update(ASSET_HASHES)
     present = {str(p.relative_to(root)) for p in files}
     errors.extend(f"Missing required file: {p}" for p in sorted(required - present))
     if errors:

@@ -19,6 +19,7 @@ run_metadata.json
 holdings.csv
 DGS3MO.csv
 *.png
+!/assets/odd-lots-index.png
 *.pdf
 .env
 .env.*

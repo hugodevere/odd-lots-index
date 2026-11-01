@@ -1,16 +1,17 @@
 {
   "sha256": {
     ".env.example": "258615906a6f525bcafa8a6fe89f7729c2d26687daa68458a152198e07de9276",
-    ".gitignore": "2ac1f849e54b5465cddceda59b91ed9e62bca193da015c6ac98ba7b5c23ba27e",
-    "DATA_SOURCES.md": "24e681c0e5650a811c7a0d8e064e59e96d3ce66df1b66286cad2d327f949ef31",
+    ".gitignore": "ba8e2bff6134d14c4e4f669ba69e75f8114870192785f4c91f3f323fa8f59ee2",
+    "DATA_SOURCES.md": "2afa89590850c8f48db79f17b832034a51b06ed51e2cc07cee3b7f79cf4e24f3",
     "LICENSE": "b69c8bc5db0fd8a206e3374a3b6917820f3ee20379a372079f5f16ecec1b5b8e",
-    "README.md": "53edeab580ac386509c5af619c723c029b153d13d77ba2386867fa8ce039fa98",
+    "README.md": "964f415b22e67db406c024f9bfabe1f7213bc805fb4c1047d7827c0985a03542",
+    "assets/odd-lots-index.png": "14ae0b159b4692569cdc8b1f2f707c8854bbe2316efff81ef7847afb5b7ca600",
     "data/odd_lots_youtube_links_2023_2026.csv": "81070a983d3426126d8c58546d191d554f5b396e1df6ca2b03a335bcef33daa4",
     "data/tbill_3m.csv": "a3ee626e1af3d3e314d9584ed8f351414ed79f79d98fd782e111e9bcf3e2b170",
     "data/trade_recommendations.csv": "6ce9f6c194caf23f6e26b691609e6322d01691b89543946e6223bfe2f271d7cd",
     "notebooks/odd_lots_backtest.ipynb": "330c34d739f22a819d907e63df9c7e9aa6bdf191495ceb952cdda45a0ebc41f7",
     "notebooks/odd_lots_stock_recs.ipynb": "c0d987d5ad15974925fc4bac11054834581692bf08ef21f104b634f5609eea73",
-    "notes/BASKET_PLAN.md": "6f47b50a2c8f80a6c8119741e88d8b3bada9bca90a8874044119340c83c2a676",
+    "notes/BASKET_PLAN.md": "7793a8a548a17f80e43d73097e996bc2b5f81610dcceaa612055cf74c9f837c5",
     "requirements.txt": "044ab33917f716be236ca052516379c932e7994a9cb2ab9b9ccd347bc942a6f3",
     "scripts/apify_transcripts.py": "de8e4eed0ce2586bcc75b250e793b7d8d334c6e53fa25d9eb73b0c0c4253071f",
     "scripts/backtest_utils.py": "2cca395efd087467b91ff68057191ee14acbb5e49300a50557da3ff8a0779176",
@@ -18,12 +19,12 @@
     "scripts/export_public.py": "b98da1546d617048d5904674a834dc593f1b89d54aa25b9ddbc4b874f7633d6b",
     "scripts/extraction_utils.py": "08eea3ec9fad873976a3e71ec6d35a8b434dd9495c6041ac6fa2d5ce5a5c01b0",
     "scripts/match_yt.py": "e5428ff0fdc20feee9a648dddcbf44694894ad74420d58a65655d6607f08f7a3",
-    "scripts/release_check.py": "3247630118f48590c40291555f965c84123d40d89a5e546316cc56e4928636af",
+    "scripts/release_check.py": "8a0c4b77a24496a0b3c6d7a5b9243ac0c0b006fc6b15d2f1967ce3400009d51d",
     "scripts/ttml_to_txt.py": "9a3bbce09e29d7dfeec5da56d45c12177a2229a112d971133f29137731384251",
     "tests/test_backtest.py": "51d6acecab6b869d89637a5828d26a84694c31e51bb5648a93365e8c1ed602ad",
     "tests/test_extraction.py": "d997ac69a0a5671f52f70f2e2d5ab90227f2995aefddd8a0c4b017f760cbcb1f",
     "tests/test_public_export.py": "a47e7e88c90dfee74fbd6e34c5b846ee719bb4a07794894d22f7d2f7552d5209",
-    "tests/test_release_safety.py": "3312459422562c968f5aed2e4887221ddb5a3f877cc60a8c3b6c8126ac7b945b",
+    "tests/test_release_safety.py": "49a2c3f1f859ea7dca207a679f902c9061cac227175e983172ec16bb0fbf9dd0",
     "tests/test_transcripts.py": "fb12e1f178d60ea45a6ce8697bb67027d96fe575bc22d1a3bb982f8d5ff0d031"
   }
 }

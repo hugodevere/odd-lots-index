@@ -1,6 +1,6 @@
 # Data sources and reuse
 
-The public package contains original code and documentation, signal metadata, episode links and Treasury data. It excludes podcast transcripts and quotations, transcript Parquet, raw model responses, Yahoo price caches, market-derived output files and charts. This boundary reduces redistribution risk; it is not a guarantee of legal compliance or permission for every downstream use.
+The public package contains original code and documentation, signal metadata, episode links, Treasury data and one static summary chart. It excludes podcast transcripts and quotations, transcript Parquet, raw model responses, Yahoo price caches and downloadable market-result datasets. This boundary reduces redistribution risk; it is not a guarantee of legal compliance or permission for every downstream use.
 
 ## Podcast signals and episode links
 
@@ -14,7 +14,7 @@ Short quotations are not automatically cleared by a word limit. The [US Copyrigh
 
 The backtest supports locally obtained Yahoo Finance adjusted closes through `yfinance`. Yahoo's [data-provider notice](https://help.yahoo.com/kb/SLN2310.html) prohibits redistribution of information displayed on or provided by Yahoo Finance. Its [terms](https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html) also address automated collection and reuse. Availability through an open-source client does not grant data rights.
 
-No Yahoo price series, rebased benchmark history, portfolio return file, statistics file or market chart is committed here. Local market inputs and calculated outputs stay in the configured private directory. The repository's code license does not authorize downloading or redistributing provider data. Obtain appropriate rights before enabling network retrieval or publishing outputs; neither rebasing nor labeling an output as derived establishes permission by itself.
+The README includes one static research chart of the calculated baskets, the RSP comparison and the cash proxy. It was rendered from the reviewed calculation through 30 October 2026 using Yahoo Finance adjusted closes and FRED DGS3MO. No downloadable Yahoo price series, rebased benchmark dataset, portfolio return file or statistics file is committed here. Local market inputs and detailed calculated outputs stay in the configured private directory. The repository's code license does not authorize downloading or redistributing provider data. Obtain appropriate rights before enabling network retrieval or publishing outputs; neither rebasing nor labeling an output as derived establishes permission by itself.
 
 ## Three-month Treasury data
 

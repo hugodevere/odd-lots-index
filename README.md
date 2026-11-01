@@ -1,10 +1,12 @@
 # Odd Lots index (Claude and GPT Assisted)
 
+![Odd Lots indexes: growth of 100, with holding-period and allocation rules](assets/odd-lots-index.png)
+
 A retrospective study of equity calls in Bloomberg's Odd Lots podcast, January 2023 to October 2026. Three language models extract candidate calls, a judge reviews them, and the code constructs three long-only baskets. This is independent research, with no affiliation with Bloomberg or Odd Lots.
 
 The public signals contain **36 approved calls across 17 episodes: 23 bullish and 13 bearish**. Of the bullish calls, 21 across 13 episodes are admitted to the baskets. BYD is outside the US-listing scope; Activision Blizzard (ATVI) remains unresolved in this pipeline. The episode file retains 736 feed records: 665 matched YouTube videos and 71 unmatched records, which include trailers and cross-promotions as well as episodes.
 
-This repository publishes code, signal metadata, episode links and Treasury data. **It contains no transcripts, verbatim transcript quotes, raw model responses, Yahoo price histories, market-derived results or charts.** Market results are generated locally and kept private. See [data sources and reuse](DATA_SOURCES.md).
+This repository publishes code, signal metadata, episode links, Treasury data and the summary chart above. **It contains no transcripts, verbatim transcript quotes, raw model responses, Yahoo price histories or downloadable market-result datasets.** Detailed market results are generated locally and kept private. See [data sources and reuse](DATA_SOURCES.md).
 
 ## Files
 
@@ -14,6 +16,7 @@ This repository publishes code, signal metadata, episode links and Treasury data
 - `data/trade_recommendations.csv`: approved signal metadata, provenance, source links and timestamps, without transcript quotations.
 - `data/odd_lots_youtube_links_2023_2026.csv`: matched and unmatched episode records.
 - `data/tbill_3m.csv`: FRED DGS3MO yield observations and a modeled cash index.
+- `assets/odd-lots-index.png`: static summary chart, calculated from the reviewed input snapshot through 30 October 2026. Sources: Yahoo Finance adjusted closes and FRED DGS3MO.
 - `notes/BASKET_PLAN.md`: calculation details. `tests/`: offline regression checks.
 
 ## Setup
