@@ -12,7 +12,7 @@ This repository publishes code, signal metadata, episode links, Treasury data an
 
 - `notebooks/odd_lots_backtest.ipynb`: basket construction and local results; saved outputs are cleared.
 - `notebooks/odd_lots_stock_recs.ipynb`: optional extraction, judge and ticker validation; saved outputs are cleared.
-- `scripts/`: basket functions, optional local transcript processing and public-export checks.
+- `scripts/`: basket functions, extraction validation helpers, the public-export script and the release check.
 - `data/trade_recommendations.csv`: approved signal metadata, provenance, source links and timestamps, without transcript quotations.
 - `data/odd_lots_youtube_links_2023_2026.csv`: matched and unmatched episode records.
 - `data/tbill_3m.csv`: FRED DGS3MO yield observations and a modeled cash index.
@@ -31,9 +31,9 @@ python -m pytest -q
 jupyter lab
 ```
 
-Open notebooks from the project root or `notebooks/`. Private inputs and results default to the ignored `private/` folder. Set `ODD_LOTS_PRIVATE_DIR` to choose another private directory; relative values resolve from the project root.
+Open notebooks from the project root or `notebooks/`. Private inputs and results default to the ignored `private/` folder.
 
-Keys come only from environment variables: `OPENROUTER_API_KEY` for model requests and `APIFY_TOKEN` for transcript fetching. `.env.example` lists the settings; the code does not automatically load `.env` or personal key files. Keep credentials out of Git.
+Settings and credentials come only from environment variables; the code reads no key files. `OPENROUTER_API_KEY` is needed only for new model requests. Optional: `ODD_LOTS_PRIVATE_DIR` chooses the private working directory (relative values resolve from the project root), `ODD_LOTS_ALLOW_NETWORK=1` permits downloads and model requests, `ODD_LOTS_RETRY_ERRORS=1` retries cached model failures, and `SEC_USER_AGENT` supplies the descriptive contact string the SEC requires for a fresh security-list download.
 
 Notebook network access is off by default. Set `ODD_LOTS_ALLOW_NETWORK=1` only when you have appropriate access rights and want to allow downloads or model requests. Paid services may incur charges. Retrying cached model failures additionally requires `ODD_LOTS_RETRY_ERRORS=1`.
 
@@ -65,18 +65,30 @@ This is an incomplete-coverage, retrospective study. Model selection, judge crit
 
 The sample is small, and concentration matters. Missing episodes, missed calls and unresolved acquired securities can affect results. Holding periods are portfolio rules rather than speakers' intended horizons. Trading costs, taxes, spreads and market impact are not modeled. Trading after publication does not remove retrospective selection bias.
 
-## Optional extraction
+## Replicating the extraction with your own transcripts
 
-Only obtain and process content you have rights to use. Keep transcripts, Parquet files and model responses private. A paid extraction service does not itself grant rights to redistribute the underlying content.
+The extraction notebook downloads nothing and ships with no transcript tooling. It reads a local transcript corpus that you assemble yourself from sources you have the right to use, keeps it private, and never writes transcript text to the public folder. Expected layout under the private directory (default `private/`):
 
-```sh
-python scripts/apify_transcripts.py data/odd_lots_youtube_links_2023_2026.csv private/youtube --workers 4
-python scripts/build_parquet.py
+```text
+private/
+  parquet/
+    docs/year=YYYY/source=<label>/*.parquet
+    chunks/year=YYYY/source=<label>/*.parquet
+  llm_extractions/        # written by the notebook: cache/, stage logs, trade_recs_*.csv
 ```
 
-Fetching is separately invoked and may incur charges. Its budget is checked between batches, not a guaranteed spending cap. The builder records coverage and stops on missing or invalid inputs unless `--allow-incomplete` is explicitly supplied. Optional Apple inputs must be supplied explicitly. Run the extraction notebook afterward; extraction, grouping and judge errors stop production.
+Both datasets are Hive-partitioned Parquet with `year` (int16) and `source` (string, any short label for the transcript provider).
 
-`python scripts/export_public.py private/llm_extractions/trade_recs_final.csv` exports approved metadata without transcript quotations. Rebuilding transcripts can change request hashes and require new model calls; existing decisions came from private cached model evidence.
+- `docs`, one row per transcript: `doc_id`, `episode_id`, `source`, `date` (date), `year`, `title`, `word_count`, `token_count_o200k`, `duration_s`, `n_chunks`, `has_speakers` (bool; true when the transcript carries speaker labels) and optionally `is_truncated` (bool).
+- `chunks`, the transcript text in order: `doc_id`, `chunk_idx` (from 0), `start_s`, `end_s`, `speaker` (null when unlabelled), `text`. Use about one minute of speech per chunk for unlabelled captions and one speaker turn for labelled transcripts; the `start_s` of the chunk holding a quote becomes the public `start_s`.
+
+When an episode has both an unlabelled and a speaker-labelled transcript, the notebook uses the labelled one unless it holds fewer than 90% of the unlabelled word count or is flagged truncated.
+
+Identifiers: `episode_id` is `<date>_<first ten hex characters of the SHA-256 of the normalized title>`, where the title is casefolded, curly apostrophes become `'`, every other character outside `a-z`, `0-9` and space becomes a space, and whitespace is collapsed. `doc_id` is `<episode_id>_<short source tag>`; the published rows use `_yt`. Dates and titles should match `data/odd_lots_youtube_links_2023_2026.csv` so that results line up with the public signal file.
+
+Model requests are cached by their full request body, including the transcript text, so a corpus that differs from the original by a single character triggers new paid model calls. Set `ODD_LOTS_ALLOW_NETWORK=1` and `OPENROUTER_API_KEY` deliberately. Extraction, grouping and judge failures stop production.
+
+`python scripts/export_public.py private/llm_extractions/trade_recs_final.csv` exports approved metadata without transcript quotations. Existing decisions came from private cached model evidence.
 
 ## Publication and license
 

@@ -3,7 +3,6 @@
 /outputs/
 **/cache/
 **/raw/
-**/youtube/
 *.parquet
 *.txt
 !requirements.txt
@@ -23,7 +22,6 @@ DGS3MO.csv
 *.pdf
 .env
 .env.*
-!.env.example
 *.env
 .venv/
 __pycache__/

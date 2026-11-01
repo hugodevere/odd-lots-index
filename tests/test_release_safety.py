@@ -34,7 +34,7 @@ def test_provenance_hash_and_environment_lookup_are_not_credentials():
 
 
 def public_fixture(root):
-    for name in ["README.md", "LICENSE", "DATA_SOURCES.md", ".env.example", "requirements.txt"]:
+    for name in ["README.md", "LICENSE", "DATA_SOURCES.md", "requirements.txt"]:
         (root / name).write_text("")
     (root / "data").mkdir()
     for name, fields in CSV_COLUMNS.items():

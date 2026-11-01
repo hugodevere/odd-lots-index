@@ -14,14 +14,11 @@ from pathlib import Path
 
 from export_public import FIELDS
 
-ROOT_FILES = {"README.md", "LICENSE", "DATA_SOURCES.md", "requirements.txt", ".env.example", ".gitignore", "PUBLIC_MANIFEST.json"}
+ROOT_FILES = {"README.md", "LICENSE", "DATA_SOURCES.md", "requirements.txt", ".gitignore", "PUBLIC_MANIFEST.json"}
 DATA_FILES = {
     "odd_lots_youtube_links_2023_2026.csv", "trade_recommendations.csv", "tbill_3m.csv",
 }
-SCRIPT_FILES = {
-    "apify_transcripts.py", "build_parquet.py", "match_yt.py", "ttml_to_txt.py",
-    "extraction_utils.py", "backtest_utils.py", "export_public.py", "release_check.py",
-}
+SCRIPT_FILES = {"extraction_utils.py", "backtest_utils.py", "export_public.py", "release_check.py"}
 ASSET_HASHES = {
     "assets/odd-lots-index.png": "14ae0b159b4692569cdc8b1f2f707c8854bbe2316efff81ef7847afb5b7ca600",
 }
@@ -33,7 +30,7 @@ PERSONAL_PATH = re.compile(
 # names. Bare hashes are allowed because they are part of the public provenance.
 SECRET = re.compile(
     r"sk-(?:or-v1-|ant-api\d+-)?[A-Za-z0-9_-]{20,}"
-    r"|apify_api_[A-Za-z0-9]{15,}|gh[pousr]_[A-Za-z0-9]{25,}"
+    r"|gh[pousr]_[A-Za-z0-9]{25,}"
     r"|github_pat_[A-Za-z0-9_]{30,}|(?:AKIA|ASIA)[A-Z0-9]{16}"
     r"|AIza[A-Za-z0-9_-]{30,}|xox[baprs]-[A-Za-z0-9-]{10,}"
     r"|eyJ[A-Za-z0-9_-]{8,}\.eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{10,}"
@@ -98,7 +95,7 @@ def allowed(path: Path) -> bool:
     return (
         parts[0] == "data" and path.name in DATA_FILES
         or parts[0] == "scripts" and path.name in SCRIPT_FILES
-        or parts[0] == "tests" and path.name in {"test_transcripts.py", "test_extraction.py", "test_backtest.py", "test_public_export.py", "test_release_safety.py"}
+        or parts[0] == "tests" and path.name in {"test_extraction.py", "test_backtest.py", "test_public_export.py", "test_release_safety.py"}
         or parts[0] == "notebooks" and path.name in {"odd_lots_stock_recs.ipynb", "odd_lots_backtest.ipynb"}
         or parts[0] == "notes" and path.name == "BASKET_PLAN.md"
     )
@@ -131,12 +128,7 @@ def check(root: Path) -> list[Path]:
         visible_text = text.replace('\\"', '"').replace("\\'", "'")
         if SECRET.search(visible_text):
             errors.append(f"Potential credential: {rel} (value suppressed)")
-        # This exact Apify API route resembles a Unix home path. Limit the
-        # exemption to its call site in the fetcher, not arbitrary public text.
-        path_text = text
-        if rel == Path("scripts/apify_transcripts.py"):
-            path_text = path_text.replace('call("/' + 'users/me/limits",', 'call(API_USAGE_ENDPOINT,')
-        if PERSONAL_PATH.search(path_text):
+        if PERSONAL_PATH.search(text):
             errors.append(f"Personal absolute path: {rel}")
         if path.suffix == ".ipynb":
             nb = json.loads(text)
@@ -145,7 +137,7 @@ def check(root: Path) -> list[Path]:
                     errors.append(f"Notebook output or attachment: {rel} cell {number}")
         if path.suffix == ".csv":
             errors.extend(check_csv(text, rel))
-    required = {"README.md", "LICENSE", "DATA_SOURCES.md", ".env.example", "requirements.txt",
+    required = {"README.md", "LICENSE", "DATA_SOURCES.md", "requirements.txt",
                 "data/trade_recommendations.csv", "data/tbill_3m.csv",
                 "data/odd_lots_youtube_links_2023_2026.csv"}
     required.update(ASSET_HASHES)

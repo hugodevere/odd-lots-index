@@ -4,9 +4,9 @@ The public package contains original code and documentation, signal metadata, ep
 
 ## Podcast signals and episode links
 
-Bloomberg's Odd Lots podcast is the source of the underlying discussion. The signal file records the project's retrospective classifications, company/ticker, direction, dates, provenance and source references. Episode titles and links identify the source. No verbatim transcript quotations are included. The project is independent and is not endorsed by Bloomberg or Odd Lots.
+Bloomberg's Odd Lots podcast is the source of the underlying discussion. The signal file records the project's retrospective classifications, company/ticker, direction, dates, provenance and source references. Episode titles and links identify the source episodes. No verbatim transcript quotations are included. The project is independent and is not endorsed by Bloomberg or Odd Lots.
 
-The [YouTube terms](https://www.youtube.com/static?template=terms) limit reuse to authorized service features or appropriate permission and restrict automated access. The default [standard YouTube license](https://support.google.com/youtube/answer/2797468?hl=en) does not grant general off-platform republication rights. Paying a transcript service does not establish a license from the underlying rights holder. Optional fetching and extraction code must be used only with appropriate access and content rights; keep its results private.
+This repository ships no transcripts and no tooling for obtaining them. Any transcript corpus used to replicate the extraction must be obtained under your own rights and kept private; the README describes only the data layout the notebook expects.
 
 Short quotations are not automatically cleared by a word limit. The [US Copyright Office](https://www.copyright.gov/help/faq/faq-fairuse.html) explains that fair use depends on the circumstances, not a fixed number of words. This package avoids transcript quotations rather than relying on a numeric threshold.
 
